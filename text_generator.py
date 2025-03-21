@@ -4,7 +4,6 @@ def text_generator(text):
     # 这里可以添加具体的文本生成逻辑
     return claude_text_generator(text)
 
-
 client = anthropic.Anthropic()
 
 def claude_text_generator(text):
@@ -25,5 +24,7 @@ def claude_text_generator(text):
             }
         ]
     )
-    return message.content[0].text
-
+    
+    for char in message.content[0].text:
+        print(char, end='', flush=True)
+        yield char
