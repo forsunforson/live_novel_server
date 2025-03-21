@@ -3,7 +3,6 @@ from fastapi import FastAPI, File, UploadFile, Request
 from fastapi.responses import StreamingResponse
 # 引入 text_generator 模块
 from text_generator import text_generator
-import anthropic
 import io
 
 # 创建 FastAPI 应用实例
@@ -15,6 +14,9 @@ app = FastAPI()
 async def upload_file(file: UploadFile = File(...)):
     # 读取上传的文件
     contents = await file.read()
+    # 保存文件到本地磁盘
+    with open(file.filename, 'wb') as f:
+        f.write(contents)
     # 返回文件的文件名和大小信息
     return {"filename": file.filename, "filesize": len(contents)}
 
