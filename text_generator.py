@@ -48,7 +48,7 @@ Once I have chosen, we can begin the game from the start of the script.
                 "content": item['content']
             })
 
-    return claude_text_generator(system_define_game_master % json_data['game'], messages)
+    return claude_text_generator(system_define_game_master % (json_data['game'], json_data['lang']), messages)
 
 system_define_poet = "You are a world-class poet. Respond only with short poems."
 system_define_game_master = """Game Rules:
@@ -60,6 +60,7 @@ Before reaching an interaction event, you can recite the script content verbatim
 Upon reaching an interaction node, you will provide interaction options from the character's perspective or as a narrator, allowing the user to select using letters. Each option should be related to foreshadowing in the text.
 For possible non-original responses from the user, you need to flexibly adjust the subsequent storyline without disrupting the main plot.
 The newly generated plot should not contain spoilers or excessive hints and should not introduce future characters or items from the script prematurely.
+Please generate word in %s language.
 """
 
 def claude_text_generator(system_role, text):
