@@ -39,22 +39,13 @@ Once I have chosen, we can begin the game from the start of the script.
         if item['role'] == 'user':
             messages.append({
                 "role": "user",
-                "content": [
-                        {
-                            "type": "text",
-                            "text": item['content']["text"]
-                        }
-                ]
+                "content": item['content']
+                
             })
         elif item['role'] == 'assistant':
             messages.append({
                 "role": "assistant",
-                "content": [
-                        {
-                            "type": "text",
-                            "text": item['content']["text"]
-                        }
-                ]
+                "content": item['content']
             })
 
     return claude_text_generator(system_define_game_master % json_data['game'], messages)
