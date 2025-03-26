@@ -56,7 +56,8 @@ Once I have chosen, we can begin the game from the start of the script.
                         }
                 ]
             })
-    return claude_text_generator(system_define_game_master % json_data['game'], str(messages))
+
+    return claude_text_generator(system_define_game_master % json_data['game'], messages)
 
 system_define_poet = "You are a world-class poet. Respond only with short poems."
 system_define_game_master = """Game Rules:

@@ -3,7 +3,7 @@ from fastapi import FastAPI, File, UploadFile, Request
 from fastapi.responses import StreamingResponse
 import uvicorn
 # 引入 text_generator 模块
-from text_generator import text_generator
+from text_generator import text_generator, multi_round_generator
 
 import io
 import json
@@ -47,7 +47,7 @@ async def play_text(request: Request):
         json_data = json.loads(data)
     except json.JSONDecodeError:
         return {'error': 'Invalid JSON data'}
-    return StreamingResponse(text_generator(json_data), media_type='application/json')
+    return StreamingResponse(multi_round_generator(json_data), media_type='application/json')
     
 
 # 主函数，用于启动应用
