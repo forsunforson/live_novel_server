@@ -42,7 +42,7 @@ Once I have chosen, we can begin the game from the start of the script.
                 "content": [
                         {
                             "type": "text",
-                            "text": item['content']."text"
+                            "text": item['content']["text"]
                         }
                 ]
             })
@@ -52,7 +52,7 @@ Once I have chosen, we can begin the game from the start of the script.
                 "content": [
                         {
                             "type": "text",
-                            "text": item['content']."text"
+                            "text": item['content']["text"]
                         }
                 ]
             })
