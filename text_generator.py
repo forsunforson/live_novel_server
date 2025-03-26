@@ -80,6 +80,6 @@ def claude_text_generator(system_role, text):
         messages=text,
     )
     print(message, end='', flush=True)
-    for char in str(message):
+    for char in str(message.content[0].text):
         yield char
 

@@ -47,7 +47,7 @@ async def play_text(request: Request):
         json_data = json.loads(data)
     except json.JSONDecodeError:
         return {'error': 'Invalid JSON data'}
-    return StreamingResponse(multi_round_generator(json_data), media_type='application/json')
+    return StreamingResponse(multi_round_generator(json_data), media_type='text/plain')
     
 
 # 主函数，用于启动应用
