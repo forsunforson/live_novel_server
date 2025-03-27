@@ -49,6 +49,21 @@ async def play_text(request: Request):
         return {'error': 'Invalid JSON data'}
     return StreamingResponse(multi_round_generator(json_data), media_type='text/plain')
     
+@app.post("/save")
+async def save_text(request: Request):
+    data = await request.body()
+
+    try:
+        json_data = json.loads(data)
+        json_str = json.dumps(json_data)
+        import hashlib
+        md5 = hashlib.md5(json_str.encode('utf-8')).hexdigest()
+        file_path = f'{md5}.txt'
+        with open(file_path, 'w') as f:
+            f.write(json_str)
+        return {'status_code': 200, 'data': md5}
+    except json.JSONDecodeError:
+        return {'error': 'Invalid JSON data'}
 
 # 主函数，用于启动应用
 if __name__ == "__main__":
