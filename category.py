@@ -24,7 +24,8 @@ def get_category(game, speed) -> str:
         temperature=1,
         system=system_define_game_designer,
         messages=[
-            {"role": "user", "content": "The speed of reading is %s. Please give me the chapters of the book." % (speed)},
+            {"role": "user", "content": "The speed of reading is %s. Please give me the chapters of the book in json format." % (speed)},
         ],
     )
+    print(message)
     return message.content[0].text
