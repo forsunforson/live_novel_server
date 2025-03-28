@@ -7,6 +7,7 @@ from text_generator import text_generator, multi_round_generator
 
 import io
 import json
+from category import get_category as category_get_category
 
 # 创建 FastAPI 应用实例
 app = FastAPI()
@@ -64,6 +65,20 @@ async def save_text(request: Request):
         return {'status_code': 200, 'data': md5}
     except json.JSONDecodeError:
         return {'error': 'Invalid JSON data'}
+
+@app.get("/load")
+async def load_text(request: Request):
+    md5 = request.query_params.get('md5', '')
+    file_path = f'{md5}.txt'
+    with open(file_path, 'r') as f:
+        json_str = f.read()
+    return {'status_code': 200, 'data': json_str}
+
+@app.get("/category")
+async def get_category(request: Request):
+    game = request.query_params.get('game', '')
+    speed = request.query_params.get('speed', '')
+    return {'status_code': 200, 'data': category_get_category(game, speed)}
 
 # 主函数，用于启动应用
 if __name__ == "__main__":
