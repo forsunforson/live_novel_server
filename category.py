@@ -16,11 +16,11 @@ def get_category(game, speed) -> str:
     Every chapter should be related to the book.
     You can use these chapters to design a game.
     Please give the chapters under the json format:
-    {"index": 1, "title": "Chapter 1: Name of the Chapter", "content": "Chapter 1 Abstract"}
+    {"title": "Chapter 1: Name of the Chapter", "content": "Chapter 1 Abstract"}
     """ % (game)
     message = client.messages.create(
         model="claude-3-7-sonnet-20250219",
-        max_tokens=1000,
+        max_tokens=5000,
         temperature=1,
         system=system_define_game_designer,
         messages=[
@@ -28,4 +28,11 @@ def get_category(game, speed) -> str:
         ],
     )
     print(message)
-    return message.content[0].text
+    chapters = message.content[0].text
+    if chapters.startswith('```json'):
+        chpapters = chapters[7:]
+    if chapters.endswith('```'):
+        chapters = chapters[:-3]
+    chpapters = chapters.strip()
+    print(chapters)
+    return chapters
