@@ -13,5 +13,5 @@ def build_context(play_request: PlayRequest) -> PlayContext:
     if play_context is None:
         return PlayContext(game=play_request.game, uid=play_request.uid, branch=play_request.branch, language=play_request.language, messages=[Message(role='user', content=round_one_message)])
     else:
-        play_context.messages.append(Message(role='user', content=play_context.content))
+        play_context.messages.append(Message(role='user', content=play_request.content))
         return play_context
