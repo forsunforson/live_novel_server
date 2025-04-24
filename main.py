@@ -1,12 +1,10 @@
 # 导入必要的库
 from fastapi import FastAPI, File, UploadFile, Request
-from fastapi.responses import StreamingResponse
 import uvicorn
 # 引入 text_generator 模块
-from text_generator import text_generator, multi_round_generator
-
-import io
+from handle.play import play
 import json
+from custom_types.struct import PlayRequest
 
 # 创建 FastAPI 应用实例
 app = FastAPI()
@@ -34,20 +32,13 @@ async def upload_file(file: UploadFile = File(...)):
 async def play_text(request: Request):
     # 从查询参数中获取文本信息
     text = request.query_params.get('text', '')
-    
-    # 返回流式响应
-    return StreamingResponse(text_generator(text), media_type='text/plain')
+    return {"result": text, "status_code": 200}
 
 # 定义 /play 接口，支持 POST 请求
 @app.post("/play")
-async def play_text(request: Request):
-    data = await request.body()
-    
-    try:
-        json_data = json.loads(data)
-    except json.JSONDecodeError:
-        return {'error': 'Invalid JSON data'}
-    return StreamingResponse(multi_round_generator(json_data), media_type='text/plain')
+async def play_text(request: PlayRequest):
+    result = play(request)
+    return {"result": result, "status_code": 200}
     
 @app.post("/save")
 async def save_text(request: Request):
