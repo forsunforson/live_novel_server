@@ -39,7 +39,7 @@ async def play_text(request: Request):
 @app.post("/play")
 async def play_text(request: PlayRequest):
     result = play(request)
-    return f"status_code: 200, result: {result}"
+    return {"status_code": 200, "result": result}
     
 @app.post("/save")
 async def save_text(request: Request):
@@ -60,7 +60,7 @@ async def save_text(request: Request):
 @app.get("/mission")
 async def get_mission(request: BaseRequest):
     response = BaseResponse(status_code=200, result=get_all_mission(request))
-    return f"status_code: {response.status_code}, result: {response.result}"
+    return {"status_code": response.status_code, "result": response.result}
 
 @app.get("/map")
 async def get_map():
