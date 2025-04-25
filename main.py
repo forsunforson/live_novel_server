@@ -3,8 +3,9 @@ from fastapi import FastAPI, File, UploadFile, Request
 import uvicorn
 # 引入 text_generator 模块
 from handle.play import play
+from handle.mission import get_all_mission
 import json
-from custom_types.struct import PlayRequest
+from custom_types.struct import BaseResponse, PlayRequest, BaseRequest
 
 # 创建 FastAPI 应用实例
 app = FastAPI()
@@ -38,7 +39,7 @@ async def play_text(request: Request):
 @app.post("/play")
 async def play_text(request: PlayRequest):
     result = play(request)
-    return {"result": result, "status_code": 200}
+    return f"status_code: 200, result: {result}"
     
 @app.post("/save")
 async def save_text(request: Request):
@@ -55,6 +56,15 @@ async def save_text(request: Request):
         return {'status_code': 200, 'data': md5}
     except json.JSONDecodeError:
         return {'error': 'Invalid JSON data'}
+
+@app.get("/mission")
+async def get_mission(request: BaseRequest):
+    response = BaseResponse(status_code=200, result=get_all_mission(request))
+    return f"status_code: {response.status_code}, result: {response.result}"
+
+@app.get("/map")
+async def get_map():
+    return {"message": "This is the map endpoint", "status_code": 200}
 
 # 主函数，用于启动应用
 if __name__ == "__main__":
