@@ -15,8 +15,17 @@ def test_play_post():
     }
     response = requests.post(PLAY_URL, json=data)
     assert response.status_code == 200
-    print('POST 请求测试通过')
 
+def test_mission():
+    data = {
+        'game': 'example_game',
+        'uid': 'example_uid',
+        'branch': 'example_branch',
+        'language': 'zh',
+    }
+    response = requests.get('http://localhost:8000/mission', json=data)
+    assert response.status_code == 200
 
 if __name__ == '__main__':
     test_play_post()
+    test_mission()
