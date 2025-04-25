@@ -6,7 +6,6 @@ system_define_mission_abstract = """You are a game master. you need to generate 
 
 def get_all_mission(request: BaseRequest) -> str:
     play_request = PlayRequest(game=request.game, uid=request.uid, branch=request.branch, language=request.language, content='')
-    print(play_request)
     context = build_context(play_request)
     context.messages.append(Message(role='user', content='generate a game mission for the me according to the history of the game.'))
     result = claude_text_generator(system_define_mission_abstract % play_request.language, context.messages)

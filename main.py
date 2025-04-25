@@ -4,6 +4,7 @@ import uvicorn
 # 引入 text_generator 模块
 from handle.play import play
 from handle.mission import get_all_mission
+from handle.map import get_available_location
 import json
 from custom_types.struct import BaseResponse, PlayRequest, BaseRequest
 
@@ -40,22 +41,6 @@ async def play_text(request: Request):
 async def play_text(request: PlayRequest):
     result = play(request)
     return {"status_code": 200, "result": result}
-    
-@app.post("/save")
-async def save_text(request: Request):
-    data = await request.body()
-
-    try:
-        json_data = json.loads(data)
-        json_str = json.dumps(json_data)
-        import hashlib
-        md5 = hashlib.md5(json_str.encode('utf-8')).hexdigest()
-        file_path = f'{md5}.txt'
-        with open(file_path, 'w') as f:
-            f.write(json_str)
-        return {'status_code': 200, 'data': md5}
-    except json.JSONDecodeError:
-        return {'error': 'Invalid JSON data'}
 
 @app.get("/mission")
 async def get_mission(request: BaseRequest):
@@ -63,8 +48,8 @@ async def get_mission(request: BaseRequest):
     return {"status_code": response.status_code, "result": response.result}
 
 @app.get("/map")
-async def get_map():
-    return {"message": "This is the map endpoint", "status_code": 200}
+async def get_map(request: BaseRequest):
+    return {"result": get_available_location(request), "status_code": 200}
 
 # 主函数，用于启动应用
 if __name__ == "__main__":
