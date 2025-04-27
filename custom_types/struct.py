@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 from pydantic import BaseModel
 
 class Message(BaseModel):
@@ -9,7 +9,7 @@ class BaseRequest(BaseModel):
     game: str
     uid: str
     branch: str
-    language: str
+    language: str = 'English'
 
 class BaseResponse(BaseModel):
     status_code: int
