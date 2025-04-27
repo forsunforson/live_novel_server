@@ -4,10 +4,12 @@ from context.context_builder import build_context
 
 system_define_map = """You are a game master. you need to describe available location for the player. Please generate word in %s language."""
 
-def get_available_location(request: BaseRequest) -> str:
-    play_request = PlayRequest(game=request.game, uid=request.uid, branch=request.branch, language=request.language, content='')
-    context = build_context(play_request)
+def get_available_location(request: PlayRequest) -> str:
+    result = build_context(request)
+    if result.is_new_game is True:
+        return "no available location"
+    context = result.play_context
     context.messages.append(Message(role='user', content='generate a map for the me according to the history of the game.'))
-    result = claude_text_generator(system_define_map % play_request.language, context.messages)
+    result = claude_text_generator(system_define_map % request.language, context.messages)
     return result
      

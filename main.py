@@ -1,21 +1,19 @@
 # 导入必要的库
 from fastapi import FastAPI, File, UploadFile, Request
 import uvicorn
-# 引入 text_generator 模块
 from handle.play import play
 from handle.mission import get_all_mission
 from handle.map import get_available_location
 from middleware import check_params
-from custom_types.struct import BaseResponse, PlayRequest, BaseRequest
+from custom_types.struct import BaseResponse, PlayRequest
 
 # 创建 FastAPI 应用实例
 app = FastAPI()
 
-@app.get("/select")
-async def select_character(request: Request):
+@app.get("/game")
+async def select_game(request: Request):
     # 从查询参数中获取文本信息
     text = request.query_params.get('game', '')
-    # 返回流式响应
     return {"status_code": 200, 'game': text}
 
 # 定义 /upload 接口
@@ -45,14 +43,14 @@ async def play_text(request: PlayRequest):
     return {"status_code": 200, "result": result}
 
 @app.get("/mission")
-async def get_mission(request: BaseRequest):
+async def get_mission(request: PlayRequest):
     if check_params(request) is False:
         return {"status_code": 400, "result": "invalid params"}
     response = BaseResponse(status_code=200, result=get_all_mission(request))
     return {"status_code": response.status_code, "result": response.result}
 
 @app.get("/map")
-async def get_map(request: BaseRequest):
+async def get_map(request: PlayRequest):
     if check_params(request) is False:
         return {"status_code": 400, "result": "invalid params"}
     return {"result": get_available_location(request), "status_code": 200}
