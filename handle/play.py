@@ -20,7 +20,8 @@ system_define_poet = "You are a world-class poet. Respond only with short poems.
 
 
 def play(request: PlayRequest) -> str:
-    context = build_context(request)
+    result = build_context(request)
+    context = result.play_context
     result = claude_text_generator(system_define_game_master % (context.game, context.language), context.messages)
     context.messages.append(Message(role='assistant', content=result))
     dump_2_file(context)
