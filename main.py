@@ -5,7 +5,7 @@ import uvicorn
 from handle.play import play
 from handle.mission import get_all_mission
 from handle.map import get_available_location
-import json
+from middleware import check_params
 from custom_types.struct import BaseResponse, PlayRequest, BaseRequest
 
 # 创建 FastAPI 应用实例
@@ -39,16 +39,22 @@ async def play_text(request: Request):
 # 定义 /play 接口，支持 POST 请求
 @app.post("/play")
 async def play_text(request: PlayRequest):
+    if check_params(request) is False:
+        return {"status_code": 400, "result": "invalid params"}
     result = play(request)
     return {"status_code": 200, "result": result}
 
 @app.get("/mission")
 async def get_mission(request: BaseRequest):
+    if check_params(request) is False:
+        return {"status_code": 400, "result": "invalid params"}
     response = BaseResponse(status_code=200, result=get_all_mission(request))
     return {"status_code": response.status_code, "result": response.result}
 
 @app.get("/map")
 async def get_map(request: BaseRequest):
+    if check_params(request) is False:
+        return {"status_code": 400, "result": "invalid params"}
     return {"result": get_available_location(request), "status_code": 200}
 
 # 主函数，用于启动应用
